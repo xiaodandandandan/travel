@@ -9,7 +9,7 @@
           输入景点/城市/主题
       </div>
       <div class="header-right">
-            三亚
+            {{city}}
            <span class="iconfont">&#xe688;</span>
       </div>
   </div>
@@ -17,7 +17,8 @@
 
 <script>
 export default {
-    name:'HomeHeader'
+    name:'HomeHeader',
+    props:['city']
 }
 </script>
 

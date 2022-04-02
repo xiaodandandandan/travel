@@ -2,7 +2,7 @@
  <div>
     <div class="title">周末去哪儿</div>
     <ul>
-        <li class="item border-bottom" v-for="item of recommendList" :key="item.id">
+        <li class="item border-bottom" v-for="item of weekendList" :key="item.id">
             <div class="item-img-wrapper">
                 <img class="item-img" :src="item.imgUrl">
             </div>
@@ -18,42 +18,7 @@
 <script>
 export default {
     name:'HomeWeekend',
-    data() {
-        return {
-            recommendList:[
-                {
-                    id:'001',
-                    imgUrl:'https://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_256x160_6ae804bb.jpg',
-                    title:'大连圣亚海洋世界',
-                    desc:'浪漫大连首站，浪漫的海浪漫.大连首站，浪漫的海.浪漫大连首站，浪漫的海'
-                },
-                {
-                    id:'002',
-                    imgUrl:'https://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_256x160_6ae804bb.jpg',
-                    title:'大连圣亚海洋世界',
-                    desc:'浪漫大连首站，浪漫的海浪漫.大连首站，浪漫的海.浪漫大连首站，浪漫的海'
-                },
-                {
-                    id:'003',
-                    imgUrl:'https://img1.qunarzz.com/sight/p0/2005/39/3979f1867defec4ea3.water.jpg_256x160_6ae804bb.jpg',
-                    title:'大连圣亚海洋世界',
-                    desc:'浪漫大连首站，浪漫的海浪漫.大连首站，浪漫的海.浪漫大连首站，浪漫的海'
-                },
-                {
-                    id:'004',
-                    imgUrl:'https://imgs.qunarzz.com/p/p67/1512/a2/0ebfcd965b9391f7.jpg_256x160_04d5813d.jpg',
-                    title:'大连圣亚海洋世界',
-                    desc:'浪漫大连首站，浪漫的海浪漫.大连首站，浪漫的海.浪漫大连首站，浪漫的海'
-                },
-                {
-                    id:'005',
-                    imgUrl:'https://imgs.qunarzz.com/p/p67/1512/a2/0ebfcd965b9391f7.jpg_256x160_04d5813d.jpg',
-                    title:'大连圣亚海洋世界',
-                    desc:'浪漫大连首站，浪漫的海浪漫.大连首站，浪漫的海.浪漫大连首站，浪漫的海'
-                },
-            ]
-        }
-    },
+    props:['weekendList']
 }
 </script>
 
