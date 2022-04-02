@@ -108,7 +108,7 @@ export default {
       right: 0;
       bottom: 0.44rem;
       box-sizing: border-box;
-      padding: 0.1rem;
+      padding: 0.15rem;
 
       .icon-img-content {
         display: block;
