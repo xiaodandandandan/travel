@@ -36,4 +36,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 3.第三方平台管理 体积较大的文件托管在第三方平台
 
 ## vue-awesome-swiper
-轮播图插件
+轮播图插件 注意版本配置写法
+
+## mixins
+封装常用的css样式 作为方法调用
