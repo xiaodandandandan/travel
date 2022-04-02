@@ -7,6 +7,8 @@ import router from './router/index'
 import fastClick from 'fastclick'
 //swiper
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+
 // import style
 // import 'swiper/css/swiper.css'
 import 'swiper/css/swiper.css'

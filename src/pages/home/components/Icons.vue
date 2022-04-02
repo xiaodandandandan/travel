@@ -2,21 +2,13 @@
   <div class="icons">
     <swiper :options="swiperOptions">
       <swiper-slide v-for="(page,index) of pages" :key="index">
-        <div class="icon" v-for="(item,index) of page" :key="index">
+        <div class="icon" v-for="item of page" :key="item.id">
           <div class="icon-img">
-            <img class="icon-img-content" :src="item.iconUrl" alt="" />
+            <img class="icon-img-content" :src="item.imgUrl" alt="" />
           </div>
-          <p class="icon-desc">{{ item.iconDesc }}</p>
+          <p class="icon-desc">{{ item.desc }}</p>
         </div>
       </swiper-slide>
-      <!-- <swiper-slide>
-        <div class="icon" v-for="(item,index) of iconList" :key="index">
-          <div class="icon-img">
-            <img class="icon-img-content" :src="item.iconUrl" alt="" />
-          </div>
-          <p class="icon-desc">{{ item.iconDesc }}</p>
-        </div>
-      </swiper-slide> -->
       <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
   </div>
@@ -25,47 +17,10 @@
 <script>
 export default {
   name: "HomeIcons",
+  props:['iconList'],
   data() {
     return {
       swiperOptions: {},
-      iconList: [
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票hhhhhh",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-        {
-          iconUrl: "https://s.qunarzz.com/homenode/images/touchheader/piao.png",
-          iconDesc: "景点门票",
-        },
-      ],
     };
   },
   computed:{
