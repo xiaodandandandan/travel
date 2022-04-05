@@ -2,8 +2,15 @@
     <div>
         <CityHeader/>
         <CitySearch/>
-        <CityList :hot = "hotCities" :cities = "cities"/>
-        <CityAlphabet :cities = "cities"/>
+        <CityList 
+            :hot = "hotCities" 
+            :cities = "cities"
+            :letter = "letter"
+        />
+        <CityAlphabet 
+            :cities = "cities"
+            @change = "handleLetterChange"
+        />
     </div>
 </template>
 
@@ -18,7 +25,8 @@ export default {
     data() {
         return {
             cities:{},
-            hotCities:[]
+            hotCities:[],
+            letter:''
         }
     },
     components:{CityHeader,CitySearch,CityList,CityAlphabet},
@@ -37,6 +45,9 @@ export default {
                     console.log('error',err.message);
                 }
             )
+        },
+        handleLetterChange(letter){
+            this.letter = letter
         }
     },
     mounted() {
