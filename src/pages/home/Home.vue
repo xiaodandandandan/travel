@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomeHeader :city="city"/>
+    <HomeHeader/>
     <HomeSwiper :swiperList="swiperList"/>
     <HomeIcons :iconList="iconList"/>
     <HomeRecommend :recommendList="recommendList"/>
@@ -9,18 +9,19 @@
 </template>
 
 <script>
-import HomeHeader from './components/Header'
+import HomeHeader from './components/Header.vue'
 import HomeSwiper from './components/Swiper'
 import HomeIcons from './components/Icons.vue'
 import HomeRecommend from './components/Recommend.vue'
 import HomeWeekend from './components/Weekend.vue'
+import {mapState} from 'vuex'
 import axios from 'axios'
 export default {
   name:'Home',
   components:{HomeHeader,HomeSwiper,HomeIcons,HomeRecommend,HomeWeekend},
   data() {
     return {
-      city:'',
+      lastCity:'',
       swiperList:[],
       iconList:[],
       recommendList: [],
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     getHomeInfo(){
-      axios.get('/mock/index.json').then(
+      axios.get('/api/index.json').then(
         res=>{
           // console.log('succ',res.data.ret,res.data)
           if(res.data.ret && res.data.data){
@@ -49,9 +50,9 @@ export default {
   mounted() {
     this.getHomeInfo()
   },
+  computed:{
+       // 映射 this.city 为 store.state.city
+       ...mapState(['city'])
+   }
 }
 </script>
-
-<style>
-
-</style>

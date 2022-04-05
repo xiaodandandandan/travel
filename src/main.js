@@ -3,6 +3,7 @@ import App from './App.vue'
 //引入router
 import VueRouter from 'vue-router'
 import router from './router/index'
+import store from './store'
 //解决移动端click事件300ms延迟执行
 import fastClick from 'fastclick'
 //swiper
@@ -27,5 +28,6 @@ Vue.use(VueAwesomeSwiper)
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

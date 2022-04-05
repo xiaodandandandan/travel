@@ -5,14 +5,19 @@
                 <div class="title border-topbottom">当前城市</div>
                 <div class="button-list">
                     <div class="button-wrapper">
-                        <div class="button">北京</div>
+                        <div class="button">{{city}}</div>
                     </div>
                 </div>        
             </div>
             <div class="area">
                 <div class="title border-topbottom">热门城市</div>
                 <div class="button-list" >
-                    <div class="button-wrapper" v-for="item of hot" :key="item.id">
+                    <div 
+                        class="button-wrapper" 
+                        v-for="item of hot" 
+                        :key="item.id"
+                        @click = "handleCityClick(item.name)"
+                    >
                         <div class="button">{{item.name}}</div>
                     </div>
                 </div>  
@@ -24,12 +29,13 @@
                 :ref="key" 
             >
                 <div class="title border-topbottom">{{key}}</div>
-                <div 
-                    class="item-list" 
-                    v-for="innerItem of item" 
-                    :key="innerItem.id"
-                >
-                    <div class="item border-bottom">
+                <div class="item-list">
+                    <div
+                        v-for="innerItem of item" 
+                        :key="innerItem.id"
+                        class="item border-bottom"
+                        @click = "handleCityClick(innerItem.name)"
+                    >
                         {{innerItem.name}}
                     </div>
                 </div>
@@ -40,6 +46,7 @@
 
 <script>
 import BScroll from 'better-scroll'
+import {mapState} from 'vuex'
 export default {
     name:'CityList',
     props:['hot','cities','letter'],
@@ -59,6 +66,17 @@ export default {
     updated() {
         this.scroll.refresh()
     },
+    computed:{
+       // 映射 this.city 为 store.state.city
+       ...mapState(['city'])
+   },
+   methods: {
+       handleCityClick(city){
+            this.$store.commit('changeCity',city)
+            this.$router.push('/')
+       }
+       //...mapMutations({handleCityClick:'changeCity'})
+   },
 }
 </script>
 
