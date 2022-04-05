@@ -52,15 +52,23 @@ export default {
           }
           this.timer = setTimeout(()=>{
             const touchY = e.touches[0].clientY - 79
-            const index = Math.floor((touchY - startY) / 20)
+            const index = Math.floor((touchY - this.startY) / 20)
             if(index >=0 && index < this.letters.length){
               this.$emit('change',this.letters[index])
+              //当前所在字母列表颜色改变
+              this.clearStyle()
+              this.$refs[this.letters[index]][0].style.color = 'gray'
             }
           },16)
         }
       },
       handleTouchEnd(){
          this.touchStatus =  false
+      },
+      clearStyle(){
+        for(const key of this.letters){
+          this.$refs[key][0].style = '#00bcd4'
+        }
       }
     },
     updated() {
@@ -84,4 +92,6 @@ export default {
             line-height: .4rem
             text-align: center
             color: $bgColor
+        .active
+          color:grey
 </style>
