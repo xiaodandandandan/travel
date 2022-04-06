@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     getHomeInfo(){
-      axios.get('/api/index.json').then(
+      axios.get('/api/index.json?city='+this.city).then(
         res=>{
           // console.log('succ',res.data.ret,res.data)
           if(res.data.ret && res.data.data){
@@ -48,7 +48,14 @@ export default {
     }
   },
   mounted() {
+    this.lastCity = this.city
     this.getHomeInfo()
+  },
+  activated() {
+    if(this.lastCity !== this.city){
+      this.lastCity = this.city
+      this.getHomeInfo()
+    }
   },
   computed:{
        // 映射 this.city 为 store.state.city
