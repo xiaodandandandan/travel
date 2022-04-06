@@ -2,14 +2,9 @@
     <div class="container" @click="handleGalleryClick">
        <div class="wrapper">
            <swiper :options="swiperOptions">
-                <swiper-slide>
+                <swiper-slide v-for="(item,index) of info" :key="index">
                  <img class="Gallery-img" 
-                   src="http://img1.qunarzz.com/sight/p0/201404/23/04b92c99462687fa1ba45c1b5ba4ad77.jpg_800x800_70debc93.jpg" 
-                  >
-                </swiper-slide>
-                 <swiper-slide>
-                 <img class="Gallery-img" 
-                   src="http://img1.qunarzz.com/sight/p0/201404/23/04b92c99462687fa1ba45c1b5ba4ad77.jpg_800x800_70debc93.jpg" 
+                   :src="item" 
                   >
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
@@ -21,6 +16,7 @@
 <script>
 export default {
     name:'CommonGallery',
+    props:['info'],
     data() {
         return {
             swiperOptions:{
@@ -38,7 +34,7 @@ export default {
         handleGalleryClick(){
             this.$emit('close')
         }
-    },
+    }
 }
 </script>
 
