@@ -1,6 +1,8 @@
 <template>
   <div id="app">
+    <keep-alive>
       <router-view></router-view>
+    </keep-alive> 
   </div>
 </template>
 
@@ -17,4 +19,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 </style>

@@ -59,7 +59,7 @@ export default {
               this.clearStyle()
               this.$refs[this.letters[index]][0].style.color = 'gray'
             }
-          },16)
+          },8)
         }
       },
       handleTouchEnd(){
