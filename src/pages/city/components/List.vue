@@ -26,7 +26,7 @@
                 class="area" 
                 v-for="(item,key) of cities" 
                 :key="key"
-                :ref="key" 
+                :ref="elem => elems[key] = elem" 
             >
                 <div class="title border-topbottom">{{key}}</div>
                 <div class="item-list">
@@ -46,37 +46,39 @@
 
 <script>
 import BScroll from 'better-scroll'
-import {mapState} from 'vuex'
+import {useStore} from 'vuex'
+import {onMounted,reactive,ref,onUpdated,watch} from 'vue'
+import {useRouter} from 'vue-router'
 export default {
     name:'CityList',
     props:['hot','cities','letter'],
-    mounted() {
-         this.scroll = new BScroll(this.$refs.wrapper,{
-            click:true
-        })
-    },
-    watch:{
-        letter(){
-            if(this.letter){
-                const el = this.$refs[this.letter][0]
-                this.scroll.scrollToElement(el)
-            }
-        }
-    },
-    updated() {
-        this.scroll.refresh()
-    },
-    computed:{
-       // 映射 this.city 为 store.state.city
-       ...mapState(['city'])
-   },
-   methods: {
-       handleCityClick(city){
-            this.$store.commit('changeCity',city)
-            this.$router.push('/')
+    setup(props){
+        const store = useStore()
+        const router = useRouter()
+        const city = store.state.city
+        const elems = ref({})
+        let scroll = null
+        const wrapper = ref(null)
+        function handleCityClick(city){
+            store.commit('changeCity',city)
+            router.push('/')
        }
-       //...mapMutations({handleCityClick:'changeCity'})
-   },
+       watch(()=>props.letter,(letter,preLetter)=>{
+            if (letter && scroll) {
+                const element = elems.value[letter]
+                scroll.scrollToElement(element)
+            }
+       })
+        onMounted(()=>{
+            scroll = new BScroll(wrapper.value,{
+                click:true
+            })
+        })
+        onUpdated(()=>{
+            scroll.refresh()
+        })
+        return {city,handleCityClick,elems,wrapper}
+    }
 }
 </script>
 

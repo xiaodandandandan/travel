@@ -1,8 +1,11 @@
 <template>
-  <div id="app">
-    <keep-alive exclude="Detail">
-      <router-view></router-view>
-    </keep-alive> 
+  <div id="app" >
+      <router-view v-slot="{Component}">
+          <keep-alive>
+           <component :key="$route.name" :is="Component" v-if="$route.meta.keepAlive" />
+          </keep-alive>
+          <component :key="$route.name" :is="Component" v-if="!$route.meta.keepAlive" />
+      </router-view>
   </div>
 </template>
 

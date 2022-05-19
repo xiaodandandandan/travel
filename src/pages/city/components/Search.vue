@@ -31,52 +31,54 @@
 
 <script>
 import Bscroll from 'better-scroll'
+import {ref,watch,onMounted,computed} from 'vue'
+import {useStore} from 'vuex'
+import {useRouter} from 'vue-router'
 export default {
     name:'CitySearch',
     props:['cities'],
-    data() {
-        return {
-            keyword:'',
-            timer:null,
-            list:[]
-        }
-    },
-    watch:{
-        keyword(){
-            if(this.timer){
-                clearTimeout(this.timer)
+    setup(props){
+        const keyword = ref('')
+        const list = ref([])
+        let timer = null
+        let scroll = null
+        const search = ref(null)
+        const hasNodata = computed(() => {
+            !list.value.length
+        })
+
+        onMounted(()=>{
+            scroll = new Bscroll(search.value)
+        })
+        const store = useStore()
+        const router = useRouter()
+        function handleCityClick(city){
+            store.commit('changeCity',city)
+            router.push('/')
+       }
+
+       watch(keyword,(keyword,preKeyword)=>{
+           if(timer){
+                clearTimeout(timer)
             }
-             if(!this.keyword){
-                this.list = []
+             if(!keyword){
+                list.value = []
                 return
             } 
-            this.timer = setTimeout(()=>{
+            timer = setTimeout(()=>{
                 const result = []
-                for(let key in this.cities){
-                     this.cities[key].forEach(el => {
-                        if(el.name.indexOf(this.keyword) > -1 || el.spell.indexOf(this.keyword) > -1){
+                for(let key in props.cities){
+                     props.cities[key].forEach(el => {
+                        if(el.name.indexOf(keyword) > -1 || el.spell.indexOf(keyword) > -1){
                             result.push(el)
                         } 
                      })
                 }
-                this.list = result
+                list.value = result
             })
-        }
-    },
-    computed:{
-        hasNodata(){
-            return !this.list.length
-        }
-    },
-    methods: {
-        handleCityClick(city){
-            this.$store.commit('changeCity',city)
-            this.$router.push('/')
-       }
-    },
-    mounted() {
-        this.scroll = new Bscroll(this.$refs.search) 
-    },
+       })
+        return {keyword,list,hasNodata,search,handleCityClick}
+    }
 }
 </script>
 

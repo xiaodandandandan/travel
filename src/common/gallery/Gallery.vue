@@ -1,13 +1,13 @@
 <template>
     <div class="container" @click="handleGalleryClick">
        <div class="wrapper">
-           <swiper :options="swiperOptions">
+           <swiper :pagination="{ clickable: true }">
                 <swiper-slide v-for="(item,index) of info" :key="index">
                  <img class="Gallery-img" 
                    :src="item" 
                   >
                 </swiper-slide>
-                <div class="swiper-pagination" slot="pagination"></div>
+                <!-- <div class="swiper-pagination" slot="pagination"></div> -->
             </swiper>
        </div>
     </div>
@@ -17,24 +17,12 @@
 export default {
     name:'CommonGallery',
     props:['info'],
-    data() {
-        return {
-            swiperOptions:{
-                pagination: {
-                    el: '.swiper-pagination',
-                    type: 'fraction'
-                },
-                //当Swiper的祖先元素和自身元素变化时，Swiper更新。
-                observer:true,
-                observeParents:true,
-            }
+    setup(props,context){
+        function handleGalleryClick(){
+            context.emit('close')
         }
-    },
-    methods: {
-        handleGalleryClick(){
-            this.$emit('close')
-        }
-    }
+        return {handleGalleryClick}
+    } 
 }
 </script>
 

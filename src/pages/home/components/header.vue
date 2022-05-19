@@ -18,13 +18,10 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {useStore} from 'vuex'
 export default {
     name:'HomeHeader',
-   computed:{
-       // 映射 this.city 为 store.state.city
-       ...mapState(['city'])
-   }
+    props:['city']
 }
 </script>
 

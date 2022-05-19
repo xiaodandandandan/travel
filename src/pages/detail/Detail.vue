@@ -14,43 +14,43 @@ import DetailBanner from './components/Banner'
 import DetailHeader from './components/Header.vue'
 import DetailList from './components/List.vue'
 import axios from 'axios'
+import {onMounted,reactive,ref} from 'vue'
+import { useRoute } from 'vue-router'
 export default {
     name:'Detail',
     components:{DetailBanner,DetailHeader,DetailList},
-    data() {
-        return {
-            bannerInfo:{
-                bannerImg:'',
-                gallaryImgs:[],
-                sightName:''
-            },
-            list:[]
-        }
-    },
-    methods: {
-        getDetailInfo(){
-            axios.get('/api/detail.json',{
+    setup(){
+        const bannerInfo = reactive({
+            bannerImg:'',
+            gallaryImgs:[],
+            sightName:''
+        })
+        const list =ref([])
+        const route = useRoute()
+        async function getDetailInfo(){
+            let res = await axios.get('/api/detail.json',{
                 params:{
-                    id:this.$route.params.id
+                    id:route.params.id
                 }
-            }).then(
-                res=>{
-                    console.log('succ',res.data);  
-                    if(res.data.ret && res.data.data){
-                        const data = res.data.data
-                        this.list = data.categoryList
-                        this.bannerInfo = {bannerImg:data.bannerImg,gallaryImgs:data.gallaryImgs,sightName:data.sightName}
-                    }
-                },
-                err=>{
-                    console.log('error',err.message);
-                }
-            )
+            })
+            res = res.data
+            if(res.ret && res.data){
+                const data = res.data
+                bannerInfo.bannerImg = data.bannerImg
+                bannerInfo.gallaryImgs = data.gallaryImgs
+                bannerInfo.sightName = data.sightName
+                list.value = data.categoryList
+               
+            }
         }
+        onMounted(()=>{
+            getDetailInfo().catch(e=>{
+                 console.log(e)
+            })
+        })
+        return {bannerInfo,list}
     },
-    mounted() {
-        this.getDetailInfo()
-    },
+   
 }
 </script>
 

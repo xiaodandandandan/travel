@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HomeHeader/>
+    <HomeHeader :city = "city"/>
     <HomeSwiper :swiperList="swiperList"/>
     <HomeIcons :iconList="iconList"/>
     <HomeRecommend :recommendList="recommendList"/>
@@ -9,17 +9,54 @@
 </template>
 
 <script>
-import HomeHeader from './components/Header'
+import HomeHeader from './components/header'
 import HomeSwiper from './components/Swiper'
 import HomeIcons from './components/Icons.vue'
 import HomeRecommend from './components/Recommend.vue'
 import HomeWeekend from './components/Weekend.vue'
-import {mapState} from 'vuex'
+import {useStore} from 'vuex'
 import axios from 'axios'
+import {ref,onMounted,onActivated,computed} from 'vue'
 export default {
   name:'Home',
   components:{HomeHeader,HomeSwiper,HomeIcons,HomeRecommend,HomeWeekend},
-  data() {
+  setup(){
+    let lastCity = ''
+    const swiperList = ref([])
+    const iconList = ref([])
+    const recommendList = ref([])
+    const weekendList = ref([])
+    const store = useStore()
+    //const city = store.state.city
+    const city = computed(()=>{
+      return store.state.city
+    })
+    async function getHomeInfo(){
+      let res =  await axios.get('/api/index.json?city='+city.value)
+      res = res.data
+      if(res.ret && res.data){
+            const data = res.data
+            swiperList.value = data.swiperList
+            iconList.value = data.iconList
+            recommendList.value = data.recommendList
+            weekendList.value = data.weekendList
+        }
+    }
+    onMounted(()=>{
+      lastCity = city.value
+      getHomeInfo()
+    })
+    onActivated(()=>{
+      //const city = store.state.city
+      console.log(lastCity,city.value)
+      if(lastCity!== city.value){
+        lastCity= city.value
+        getHomeInfo()
+      }
+    })
+    return {swiperList,iconList,recommendList,weekendList,city}
+  },
+  /* data() {
     return {
       lastCity:'',
       swiperList:[],
@@ -60,6 +97,6 @@ export default {
   computed:{
        // 映射 this.city 为 store.state.city
        ...mapState(['city'])
-   }
+   } */
 }
 </script>

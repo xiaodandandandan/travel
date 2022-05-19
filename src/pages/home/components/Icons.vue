@@ -15,18 +15,15 @@
 </template>
 
 <script>
+import { computed} from 'vue'
 export default {
   name: "HomeIcons",
   props:['iconList'],
-  data() {
-    return {
-      swiperOptions: {},
-    };
-  },
-  computed:{
-      pages(){
-          const pages = []
-          this.iconList.forEach((el,index) => {
+  setup(props){
+    const swiperOptions = {};
+    const pages = computed(()=>{
+      const pages = []
+          props.iconList.forEach((el,index) => {
               const page = Math.floor(index/8)
               if(!pages[page]){
                   pages[page] = []
@@ -34,7 +31,8 @@ export default {
               pages[page].push(el)
           });
           return pages
-      }
+    })
+    return {swiperOptions ,pages}
   }
 };
 </script>
@@ -42,7 +40,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~styles/varibles.styl';
 @import '~styles/mixins.styl';
-.icons >>> .swiper-container {
+.icons :deep() .swiper-container {
   height: 0;
   padding-bottom: 50%;
 }

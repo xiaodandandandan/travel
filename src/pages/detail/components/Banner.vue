@@ -23,24 +23,21 @@
 <script>
 import CommonGallery from 'common/gallery/Gallery'
 import fadeAnimation from 'common/fade/fadeAnimation'
+import {ref} from 'vue'
 export default {
     name:'DetailBanner',
     components:{CommonGallery,fadeAnimation},
     props:['bannerInfo'],
-    data() {
-        return {
-            showGallery:false,
-            // galleryImg:[]
+    setup(){
+        let showGallery = ref(false)
+        function handleBannerClick(){
+            showGallery.value = true
         }
-    },
-    methods: {
-        handleBannerClick(){
-            this.showGallery = true
-        },
-        handleGalleryClose(){
-            this.showGallery = false
+        function handleGalleryClose(){
+            showGallery.value = false
         }
-    },
+        return {showGallery,handleBannerClick,handleGalleryClose}
+    }
 }
 </script>
 

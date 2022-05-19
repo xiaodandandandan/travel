@@ -4,7 +4,7 @@
       class="item" 
       v-for="item of letters" 
       :key="item"
-      :ref="item"
+      :ref="elem => elems[item] = elem"
       @touchstart = "handleTouchStart"
       @touchmove = "handleTouchMove"
       @touchend = "handleTouchEnd"
@@ -17,63 +17,64 @@
 </template>
 
 <script>
+import {computed,onUpdated,ref} from 'vue'
 export default {
     name:'CityAlphabet',
     props:['cities'],
-    data() {
-      return {
-        touchStatus:false,
-        startY:0,
-        timer:null
-      }
-    },
-    computed:{
-      letters(){
+    setup(props,context){
+      let touchStatus = false
+      let startY = 0
+      let timer = null
+      const elems = ref([])
+      const letters = computed(()=>{
         const letters = []
-        for(let i in this.cities){
+        for(let i in props.cities){
           letters.push(i)
         }
         return letters
+      })
+      onUpdated(()=>{
+        //console.log(elems.value['A'].offsetTop)
+        startY =  elems.value['A'].offsetTop
+      })
+      function handleLetterClick(e){
+        context.emit('change',e.target.innerText)
+        clearStyle()
+        elems.value[e.target.innerText].style.color = 'gray'
       }
-    },
-    methods: {
-      handleLetterClick(e){
-        //自定义事件传值
-        this.$emit('change',e.target.innerText)
-        //console.log(e.target.innerText);
-      },
-      handleTouchStart(){
-        this.touchStatus =  true
-      },
-      handleTouchMove(e){
-        if(this.touchStatus){
-          if(this.timer){
-            clearTimeout(this.timer)
+      function handleTouchStart(){
+          touchStatus =  true
+      }
+      function handleTouchEnd(){
+         touchStatus =  false
+      }
+      function clearStyle(){
+        for(const key of letters.value){
+          elems.value[key].style.color = '#00bcd4'
+        }
+      }
+      function handleTouchMove(e){     
+        //console.log('aaa')
+        if(touchStatus){
+          if(timer){
+            clearTimeout(timer)
+            ///timer = null
           }
-          this.timer = setTimeout(()=>{
+          timer = setTimeout(()=>{
             const touchY = e.touches[0].clientY - 79
-            const index = Math.floor((touchY - this.startY) / 20)
-            if(index >=0 && index < this.letters.length){
-              this.$emit('change',this.letters[index])
+            const index = Math.floor((touchY - startY) / 20)
+            if(index >=0 && index < letters.value.length){
+              //console.log(letters.value[index])
+              context.emit('change',letters.value[index])
               //当前所在字母列表颜色改变
-              this.clearStyle()
-              this.$refs[this.letters[index]][0].style.color = 'gray'
+              clearStyle()
+              elems.value[letters.value[index]].style.color = 'gray'
             }
           },8)
         }
-      },
-      handleTouchEnd(){
-         this.touchStatus =  false
-      },
-      clearStyle(){
-        for(const key of this.letters){
-          this.$refs[key][0].style = '#00bcd4'
-        }
       }
-    },
-    updated() {
-      this.startY =  this.$refs['A'][0].offsetTop
-    },
+      return {letters,elems,handleLetterClick, handleTouchStart,handleTouchEnd, handleTouchMove}
+    }
 }
 </script>
 
